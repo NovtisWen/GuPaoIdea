@@ -1,4 +1,4 @@
-package DesignPattern.vip.wen.pattern.factory.simple;
+package vip.wen.pattern.factory.simple;
 
 /**
  *

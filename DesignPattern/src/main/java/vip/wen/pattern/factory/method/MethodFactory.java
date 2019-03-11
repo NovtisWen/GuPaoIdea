@@ -1,4 +1,4 @@
-package DesignPattern.vip.wen.pattern.factory.method;
+package vip.wen.pattern.factory.method;
 
 /**
  * @author wenbo

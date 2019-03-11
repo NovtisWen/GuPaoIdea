@@ -1,4 +1,4 @@
-package DesignPattern.vip.wen.pattern.factory.simple;
+package vip.wen.pattern.factory.simple;
 
 /**
  * @author wenbo
@@ -22,5 +22,6 @@ public class CoffeeFactory {
         factory.makeCoffee("Latte").getCoffe();
         factory.makeCoffee("Americano").getCoffe();
         factory.makeCoffee("Cappuccino").getCoffe();
+        
     }
 }

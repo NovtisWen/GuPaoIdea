@@ -1,7 +1,7 @@
-package DesignPattern.vip.wen.pattern.factory.method;
+package vip.wen.pattern.factory.method;
 
-import DesignPattern.vip.wen.pattern.factory.simple.Coffee;
-import DesignPattern.vip.wen.pattern.factory.simple.Latte;
+import vip.wen.pattern.factory.simple.Coffee;
+import vip.wen.pattern.factory.simple.Latte;
 
 /**
  * @author wenbo

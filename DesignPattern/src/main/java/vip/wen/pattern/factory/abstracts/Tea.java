@@ -1,4 +1,4 @@
-package DesignPattern.vip.wen.pattern.factory.abstracts;
+package vip.wen.pattern.factory.abstracts;
 
 /**
  * @author wenbo

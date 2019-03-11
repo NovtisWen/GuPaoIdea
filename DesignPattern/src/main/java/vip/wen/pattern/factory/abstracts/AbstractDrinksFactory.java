@@ -1,6 +1,6 @@
-package DesignPattern.vip.wen.pattern.factory.abstracts;
+package vip.wen.pattern.factory.abstracts;
 
-import DesignPattern.vip.wen.pattern.factory.simple.Coffee;
+import vip.wen.pattern.factory.simple.Coffee;
 
 /**
  * @author wenbo
