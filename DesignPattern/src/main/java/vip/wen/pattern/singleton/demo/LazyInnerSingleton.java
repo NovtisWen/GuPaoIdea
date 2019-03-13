@@ -6,9 +6,9 @@ public class LazyInnerSingleton {
     //1、虽然构造方法私有了，但是，逃不过反射的法眼
     //2、序列化的方式可以破坏单例
     private LazyInnerSingleton(){
-        if(LazyInner.INLAZY != null) {//1、反射解决方法通过检查的方式
-            throw new RuntimeException("不准构建多个实例");
-        }
+        //if(LazyInner.INLAZY != null) {//1、反射解决方法通过检查的方式
+        // throw new RuntimeException("不准构建多个实例");
+        //}
     }
 
     //懒汉式单例

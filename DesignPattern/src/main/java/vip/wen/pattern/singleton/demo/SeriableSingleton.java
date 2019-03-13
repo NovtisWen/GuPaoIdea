@@ -1,17 +1,19 @@
 package vip.wen.pattern.singleton.demo;
 
+import java.io.Serializable;
+
 /**
  * 饿汉式单例
  */
-public class HungrySeriableSingleton {
+public class SeriableSingleton implements Serializable {
 
-    private final static HungrySeriableSingleton INSTANCE = new HungrySeriableSingleton();
+    private final static SeriableSingleton INSTANCE = new SeriableSingleton();
 
-    private HungrySeriableSingleton(){
+    private SeriableSingleton(){
 
     }
 
-    public synchronized static HungrySeriableSingleton getInstance(){
+    public synchronized static SeriableSingleton getInstance(){
         return INSTANCE;
     }
 
