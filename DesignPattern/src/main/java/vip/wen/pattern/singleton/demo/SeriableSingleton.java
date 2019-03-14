@@ -19,7 +19,7 @@ public class SeriableSingleton implements Serializable {
 
     /**
      * 反序列化破坏单例方法
-     * 覆盖方法返回本身实例
+     * FileInputStream的readObject()方法会通过反射调用对象的readSolve()方法，这里直接返回了本身实例，避免了序列化破坏
      * @return
      */
     public Object readSolve(){
