@@ -37,11 +37,11 @@ public class EnumSingletonTest {
            System.out.println("两个实例中的值是否一致："+(singleton1.getCode()==singleton2.getCode()));
            System.out.println("两个实例是否一致："+(singleton1==singleton2));
 
-           EnumSingleton2 singleton3 = EnumSingleton2.getInstance();
+           /*EnumSingleton2 singleton3 = EnumSingleton2.getInstance();
            singleton3.setData(new Object());
            singleton3.setCode("abc");
            System.out.println("两个不同类实例的值是否相同："+(singleton1.getCode()==singleton3.getCode()));
-           System.out.println("两个实例中的值是否一致："+(singleton1.getData()==singleton3.getData()));
+           System.out.println("两个实例中的值是否一致："+(singleton1.getData()==singleton3.getData()));*/
 
         }catch (Exception e){
             e.printStackTrace();
@@ -50,7 +50,7 @@ public class EnumSingletonTest {
 
     /**
      * 反射破坏Enum单例
-     * 枚举类是会在初始化的时候会创建实例
+     * 枚举类是只会在初始化的时候会创建实例
      * @param args
 
     public static void main(String[] args){
