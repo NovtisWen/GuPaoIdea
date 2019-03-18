@@ -1,11 +1,6 @@
 package vip.wen.pattern.prototype.business;
 
-import javax.sound.midi.Soundbank;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-public class BasePrototype{
+public class BasePrototypeVO{
 
     private Integer id;
 

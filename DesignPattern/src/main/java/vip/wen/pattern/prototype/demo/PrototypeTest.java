@@ -1,6 +1,7 @@
 package vip.wen.pattern.prototype.demo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PrototypeTest {
