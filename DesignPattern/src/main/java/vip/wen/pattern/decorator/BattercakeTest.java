@@ -3,9 +3,13 @@ package vip.wen.pattern.decorator;
 public class BattercakeTest {
 
     public static void main(String[] args){
-        EggDecorator eggDecorator = new EggDecorator(new BaseBattercake());
+        Battercake battercake ;
+        battercake = new BaseBattercake();
+        battercake = new EggDecorator(battercake);
 
-        System.out.println(eggDecorator.getMsg());
-        System.out.println(eggDecorator.getPrice());
+        battercake = new EggDecorator(battercake);
+
+        System.out.println(battercake.getMsg());
+        System.out.println(battercake.getPrice());
     }
 }

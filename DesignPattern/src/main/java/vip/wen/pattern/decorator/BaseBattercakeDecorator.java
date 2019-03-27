@@ -2,9 +2,9 @@ package vip.wen.pattern.decorator;
 
 public abstract class BaseBattercakeDecorator extends Battercake{
 
-    private BaseBattercake battercake;
+    private Battercake battercake;
 
-    public BaseBattercakeDecorator(BaseBattercake battercake){
+    public BaseBattercakeDecorator(Battercake battercake){
         this.battercake = battercake;
     }
 

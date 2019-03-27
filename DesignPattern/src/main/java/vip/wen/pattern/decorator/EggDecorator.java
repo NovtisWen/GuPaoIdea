@@ -2,13 +2,13 @@ package vip.wen.pattern.decorator;
 
 public class EggDecorator extends BaseBattercakeDecorator{
 
-    public EggDecorator(BaseBattercake battercake) {
+    public EggDecorator(Battercake battercake) {
         super(battercake);
     }
 
     @Override
     public void doSomething() {
-        
+
     }
 
     @Override
