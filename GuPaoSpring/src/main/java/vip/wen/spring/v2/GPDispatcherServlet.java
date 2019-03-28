@@ -103,7 +103,7 @@ public class GPDispatcherServlet extends HttpServlet {
         for (Map.Entry<String,Object> entry: ioc.entrySet()) {
             Class<?> clazz = entry.getValue().getClass();
 
-            if(!clazz.isAnnotationPresent(GPController.class)){return;}
+            if(!clazz.isAnnotationPresent(GPRequestMapping.class)){return;}
 
             //保存在类上面的URL
             String baseUrl = "";
