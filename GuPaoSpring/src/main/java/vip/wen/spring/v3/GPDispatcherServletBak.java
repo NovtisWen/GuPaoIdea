@@ -1,7 +1,5 @@
-package vip.wen.spring.v2;
+package vip.wen.spring.v3;
 
-import com.sun.xml.internal.bind.unmarshaller.DOMScanner;
-import jdk.nashorn.internal.ir.IfNode;
 import vip.wen.spring.Service.GPService;
 import vip.wen.spring.annotation.GPAutowired;
 import vip.wen.spring.annotation.GPRequestMapping;
@@ -22,7 +20,7 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.*;
 
-public class GPDispatcherServlet extends HttpServlet {
+public class GPDispatcherServletBak extends HttpServlet {
     //保存application.properties配置文件中的内容
     private Properties contextConfig = new Properties();
     //保存扫描的所有的类名
@@ -106,7 +104,7 @@ public class GPDispatcherServlet extends HttpServlet {
         for (Map.Entry<String,Object> entry: ioc.entrySet()) {
             Class<?> clazz = entry.getValue().getClass();
 
-            if(!clazz.isAnnotationPresent(GPRequestMapping.class)){return;}
+            if(!clazz.isAnnotationPresent(GPController.class)){return;}
 
             //保存在类上面的URL
             String baseUrl = "";

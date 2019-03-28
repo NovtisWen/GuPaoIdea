@@ -1,7 +1,5 @@
-package vip.wen.spring.v2;
+package vip.wen.spring.v3.servlet;
 
-import com.sun.xml.internal.bind.unmarshaller.DOMScanner;
-import jdk.nashorn.internal.ir.IfNode;
 import vip.wen.spring.Service.GPService;
 import vip.wen.spring.annotation.GPAutowired;
 import vip.wen.spring.annotation.GPRequestMapping;
@@ -30,7 +28,10 @@ public class GPDispatcherServlet extends HttpServlet {
     //IOC容器，我们来揭开它的神秘面纱
     private Map<String,Object> ioc = new HashMap<String,Object>();
     //保存url和Method的对应关系
-    private Map<String,Method> handleMapping = new HashMap<String,Method>();
+    //private Map<String,Method> handleMapping = new HashMap<String,Method>();
+
+    //V3版本，思考为什么不用map
+    private List<HandlerMapping> handlerMapping = new ArrayList<HandlerMapping>();
     //
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -106,7 +107,7 @@ public class GPDispatcherServlet extends HttpServlet {
         for (Map.Entry<String,Object> entry: ioc.entrySet()) {
             Class<?> clazz = entry.getValue().getClass();
 
-            if(!clazz.isAnnotationPresent(GPRequestMapping.class)){return;}
+            if(!clazz.isAnnotationPresent(GPController.class)){return;}
 
             //保存在类上面的URL
             String baseUrl = "";
@@ -123,7 +124,9 @@ public class GPDispatcherServlet extends HttpServlet {
 
                 //
                 String url = (baseUrl + "/" + requestMapping.value()).replaceAll("/","/");
-                handleMapping.put(url,method);
+                //handleMapping.put(url,method);
+                this.handlerMapping.add(new HandlerMapping(url,entry.getValue(),method));
+
                 System.out.println("Mapped:" +url +","+method);
             }
         }
@@ -255,6 +258,11 @@ public class GPDispatcherServlet extends HttpServlet {
         String contextPath = req.getContextPath();
         url = url.replaceAll(contextPath, "").replaceAll("/","/");
 
+        HandlerMapping handlerMapping = getHandler(req);
+        if(handlerMapping == null){
+
+        }
+
         if(!this.handleMapping.containsKey(url)){
             resp.getWriter().write("404 NOT Found!!!");
         }
@@ -328,6 +336,10 @@ public class GPDispatcherServlet extends HttpServlet {
 
     }
 
+    private HandlerMapping getHandler(HttpServletRequest req) {
+        return null;
+    }
+
     //url传过来的参数都是string类型的，HTTP是基于字符串的协议
     //只需要把string转换为任意类型就好
     private Object convert(Class<?> type,String value){
@@ -342,4 +354,47 @@ public class GPDispatcherServlet extends HttpServlet {
         return value;
     }
 
+    //保存了一个url和一个method的关系
+    public class HandlerMapping {
+        private String url;
+        private Method method;
+        private Object controller;
+        //把形参列表
+        //餐宿的名字作为Key,参数的顺序位置作为值
+        private Map<String,Integer> paramIndexMapping;
+
+        public HandlerMapping(String url, Object controller, Method method) {
+            this.url = url;
+            this.method = method;
+            this.controller = controller;
+            paramIndexMapping = new HashMap<String, Integer>();
+            putParamIndexMapping(method);
+        }
+
+        private void putParamIndexMapping(Method method) {
+            Annotation[][] pa = method.getParameterAnnotations();
+            //循环注解数组
+            //因为一个参数可以有多个注解，而一个方法又有多个参数
+            for (int i=0;i<pa.length;i++){
+                for (Annotation a : pa[i]) {
+                    if(a instanceof GPRequestParam){
+                        String  paramName = ((GPRequestParam) a).value();
+                        if(!"".equals(paramName.trim())){
+                            paramIndexMapping.put(paramName,i);
+                        }
+                    }
+                }
+            }
+            //提取方法中的request和response参数
+            Class<?>[] paramsTypes = method.getParameterTypes();
+            for (int i=0;i<paramsTypes.length;i++){
+                Class<?> type = paramsTypes[i];
+                if(type == HttpServletRequest.class || type == HttpServletResponse.class){
+                    paramIndexMapping.put(type.getName(),i);
+                }
+            }
+        }
+
+
+    }
 }
