@@ -263,11 +263,13 @@ public class GPDispatcherServlet extends HttpServlet {
 
         }
 
-        if(!this.handleMapping.containsKey(url)){
+        /*if(!this.handleMapping.containsKey(url)){
             resp.getWriter().write("404 NOT Found!!!");
         }
 
-        Method method = this.handleMapping.get(url);
+        Method method = this.handleMapping.get(url);*/
+
+        Method method = this.handlerMapping.get(1).getMethod();
 
         //传参暂时写死
         Map<String,String[]> params = req.getParameterMap();
@@ -369,6 +371,18 @@ public class GPDispatcherServlet extends HttpServlet {
             this.controller = controller;
             paramIndexMapping = new HashMap<String, Integer>();
             putParamIndexMapping(method);
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public Method getMethod() {
+            return method;
+        }
+
+        public Object getController() {
+            return controller;
         }
 
         private void putParamIndexMapping(Method method) {
