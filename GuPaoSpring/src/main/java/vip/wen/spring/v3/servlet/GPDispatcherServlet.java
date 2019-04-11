@@ -31,6 +31,8 @@ public class GPDispatcherServlet extends HttpServlet {
     //private Map<String,Method> handleMapping = new HashMap<String,Method>();
 
     //V3版本，思考为什么不用map
+    //用Map的话,key，只能是url
+    //HandlerMapping 本身的功能就是把url和method建立对应关系
     private List<HandlerMapping> handlerMapping = new ArrayList<HandlerMapping>();
     //
     @Override
@@ -252,91 +254,47 @@ public class GPDispatcherServlet extends HttpServlet {
     }
 
     private void doDispatch(HttpServletRequest req, HttpServletResponse resp) throws Exception{
+
+
+        HandlerMapping handlerMapping = getHandler(req);
+        if(handlerMapping == null){
+            //resp.getWriter().write("404 NOT FOUND!!");
+
+        //if(!this.handleMapping.containsKey(url)){
+            resp.getWriter().write("404 NOT Found!!!");
+            return;
+        }
+
+        //Method method = this.handleMapping.get(url);
+
+
+
+
+        //投机取巧的方式
+        //可以通过翻身拿到Method所在class，拿到class之后还是拿到class的名称
+        //再调用toLowerFirstCase获取beanName
+        //String beanName = toLowerFirstCase(method.getDeclaringClass().getSimpleName());
+        //method.invoke(ioc.get(beanName),new Object[]{req,resp,paramValues});
+
+    }
+
+    //处理HandlerMapping
+    private HandlerMapping getHandler(HttpServletRequest req) {
+
+        if(handlerMapping.isEmpty()){return null;}
+
         //绝对路径
         String url = req.getRequestURI();
         //处理成相路径
         String contextPath = req.getContextPath();
         url = url.replaceAll(contextPath, "").replaceAll("/","/");
 
-        HandlerMapping handlerMapping = getHandler(req);
-        if(handlerMapping == null){
-
-        }
-
-        if(!this.handleMapping.containsKey(url)){
-            resp.getWriter().write("404 NOT Found!!!");
-        }
-
-        Method method = this.handleMapping.get(url);
-
-        //传参暂时写死
-        Map<String,String[]> params = req.getParameterMap();
-
-        Class<?>[] parameterTypes =method.getParameterTypes();
-
-        Object[] paramValues = new Object[parameterTypes.length];
-        for (int i=0;i<parameterTypes.length;i++){
-            Class parameterType = parameterTypes[i];
-            //并不能用instanceod，parameterType它不是实参，而是形参
-            if(parameterType == HttpServletRequest.class){
-                paramValues[i] = req;
-                continue;
-            }else if(parameterType == HttpServletResponse.class){
-                paramValues[i] = resp;
-                continue;
-            }else if(parameterType == String.class){
-                //将方法上的注解拿到
-                Annotation[][] pa = method.getParameterAnnotations();
-
-                //循环注解数组
-                for (int j=0;j<pa.length;j++){
-                    for (Annotation a : pa[j]) {
-                        //我们要解析的只是GPRequestParam
-                        //拿到参数的名称
-                        if(a instanceof GPRequestParam){
-                            String paramName = ((GPRequestParam) a).value();
-
-                            //http://localhost/demo/query?name=Tom
-                            //params key="name" value=["Tom"]
-                            //简化版本
-                            //GPRequestParam requestParam = (GPRequestParam) parameterType.getAnnotation(GPRequestParam.class);
-
-                            //从req拿到的参数列表中去找到对应的key
-                            if(params.containsKey(paramName)){
-                                //for (Map.Entry<String, String[]> param : params.entrySet()) {
-                                    //拿到key所对应的值，而拿到的之歌值，是一对多的关系
-                                    //对方接受的是String类型，所以把数据统一处理为string
-                                    /*String value = Arrays.toString(param.getValue())
-                                            .replaceAll("\\[\\]","");*/
-                                            //.replaceAll("\\s",",");
-                                    //类型的强制转换
-
-                                    String value = Arrays.toString(params.get(paramName)).replaceAll("\\[|\\]","");
-
-                                    paramValues[i] = convert(parameterType,value);
-
-                                //}
-
-                            }
-
-                        }
-                    }
-
-                }
-
+        for (HandlerMapping mapping : this.handlerMapping) {
+            if(mapping.getUrl().equals(url)){
+                return mapping;
             }
-
         }
 
-        //投机取巧的方式
-        //可以通过翻身拿到Method所在class，拿到class之后还是拿到class的名称
-        //再调用toLowerFirstCase获取beanName
-        String beanName = toLowerFirstCase(method.getDeclaringClass().getSimpleName());
-        method.invoke(ioc.get(beanName),new Object[]{req,resp,paramValues});
-
-    }
-
-    private HandlerMapping getHandler(HttpServletRequest req) {
         return null;
     }
 
@@ -369,6 +327,18 @@ public class GPDispatcherServlet extends HttpServlet {
             this.controller = controller;
             paramIndexMapping = new HashMap<String, Integer>();
             putParamIndexMapping(method);
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public Method getMethod() {
+            return method;
+        }
+
+        public Object getController() {
+            return controller;
         }
 
         private void putParamIndexMapping(Method method) {
