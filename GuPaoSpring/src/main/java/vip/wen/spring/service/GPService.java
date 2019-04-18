@@ -1,4 +1,4 @@
-package vip.wen.spring.Service;
+package vip.wen.spring.service;
 
 import java.lang.annotation.*;
 

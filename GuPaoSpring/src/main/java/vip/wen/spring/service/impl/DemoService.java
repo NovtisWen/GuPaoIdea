@@ -1,8 +1,8 @@
-package vip.wen.spring.Service.impl;
+package vip.wen.spring.service.impl;
 
 
-import vip.wen.spring.Service.GPService;
-import vip.wen.spring.Service.IDemoService;
+import vip.wen.spring.service.GPService;
+import vip.wen.spring.service.IDemoService;
 
 /**
  * 核心业务逻辑
