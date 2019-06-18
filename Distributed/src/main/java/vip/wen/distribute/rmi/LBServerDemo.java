@@ -5,7 +5,10 @@ import vip.wen.distribute.rmi.zk.RegisterCenterImpl;
 
 import java.io.IOException;
 
-public class ServerDemo {
+/**
+ * 集群测试
+ */
+public class LBServerDemo {
     public static void main(String[] args) throws IOException {
         IGpHello iGpHello = new GpHelloImpl();
         IGpHello iGpHello1 = new GpHelloImpl2();

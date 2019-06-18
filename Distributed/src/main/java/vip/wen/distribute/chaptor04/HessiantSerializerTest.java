@@ -1,13 +1,14 @@
-package vip.wen.distribute.chaptor02;
+package vip.wen.distribute.chaptor04;
 
-public class SerializerTest {
+import vip.wen.distribute.chaptor02.FastjsonSerializer;
+import vip.wen.distribute.chaptor02.ISerializer;
+import vip.wen.distribute.chaptor02.User;
+
+public class HessiantSerializerTest {
 
     public static void main(String[] args){
-        //XStream XML 序列化
-        //ISerializer iSerializer = new XmlSerializer();
-
-        //FastJson 序列化
-        ISerializer iSerializer = new FastjsonSerializer();
+        //Hessian 序列化
+        ISerializer iSerializer = new HessianSerializer();
         User user = new User();
         user.setAge(18);
         user.setName("Wen");

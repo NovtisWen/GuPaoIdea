@@ -1,6 +1,8 @@
 package vip.wen.distribute.rmi;
 
 import com.sun.corba.se.impl.ior.ObjectAdapterIdNumber;
+import sun.misc.Version;
+import sun.security.provider.certpath.Vertex;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -8,15 +10,16 @@ import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.Socket;
+import java.util.Map;
 
 public class ProcessorHandler implements Runnable{
 
     private Socket socket;
-    private Object service;
+    private Map<String,Object> handleMap;
 
-    public ProcessorHandler(Socket socket, Object service) {
+    public ProcessorHandler(Socket socket, Map<String,Object> handleMap){
         this.socket=socket;
-        this.service=service;
+        this.handleMap=handleMap;;
     }
 
     @Override
@@ -59,6 +62,14 @@ public class ProcessorHandler implements Runnable{
         for (int i = 0; i < args.length; i++){
             types[i] = args[i].getClass();
         }
+        String serviceName = request.getClassName();
+        String version = request.getVersion();
+        if (version!=null&&!version.equals("")){
+            serviceName = serviceName+"-"+version;
+        }
+        //从handlerMap中，根据客户端请求的地址，去拿到响应的服务，通过反射发起调用
+        Object service = handleMap.get(request.getClassName());
+        //旧方法
         Method method = service.getClass().getMethod(request.getMethodName(),types);
         return method.invoke(service,args);
     }

@@ -1,5 +1,7 @@
 package vip.wen.distribute.rmi;
 
+import org.omg.PortableInterceptor.Interceptor;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -8,6 +10,7 @@ import java.net.UnknownHostException;
 
 public class TCPTransport {
 
+    private String serviceAddress;
     private String host;
     private int port;
 
@@ -16,11 +19,16 @@ public class TCPTransport {
         this.port = port;
     }
 
+    public TCPTransport(String serviceAddress) {
+        this.serviceAddress = serviceAddress;
+    }
+
     private Socket newSocket(){
         System.out.println("创建一个新连接");
         Socket socket;
         try {
-            socket = new Socket(host,port);
+            String[] arrs =serviceAddress.split(":");
+            socket = new Socket(arrs[0],Integer.parseInt(arrs[1]));
             return socket;
         } catch (UnknownHostException e) {
             e.printStackTrace();
