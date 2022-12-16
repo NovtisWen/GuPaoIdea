@@ -19,7 +19,7 @@
     <maven.compiler.target>1.8</maven.compiler.target>
     <servlet.api.version>2.4</servlet.api.version>
     <!-- dependency versions -->
-    <spring.version>5.0.2.RELEASE</spring.version>
+    <spring.version>5.2.20.RELEASE</spring.version>
   </properties>
 
   <dependencies>
